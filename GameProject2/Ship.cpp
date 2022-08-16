@@ -33,7 +33,7 @@ void Ship::ProcessKeyboard(const uint8_t* state)
 	mVSpeed = 0.f;
 	mHSpeed = 0.f;
 	float rotation = 0.f;
-	
+
 	if (state[SDL_SCANCODE_A])
 	{
 		mHSpeed = -150.f;

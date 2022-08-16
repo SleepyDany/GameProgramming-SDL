@@ -6,6 +6,7 @@
 #include "AnimationSpriteComponent.h"
 #include "BGSpriteComponent.h"
 #include "Ship.h"
+#include "Character.h"
 
 bool Game::Initialize()
 {
@@ -91,6 +92,7 @@ void Game::ProcessInput()
 	}
 
 	reinterpret_cast<Ship*>(mActors[0])->ProcessKeyboard(kb_state);
+	reinterpret_cast<Character*>(mActors[1])->ProcessKeyboard(kb_state);
 }
 
 void Game::UpdateGame()
@@ -235,6 +237,10 @@ void Game::LoadData()
 	ship->SetScale(1.5f);
 	AddActor(ship);
 
+	Character* person = new Character(this);
+	person->SetPosition(Vector2(100.f, 650.f));
+	person->SetScale(1.f);
+	AddActor(person);
 
 	Actor* background = new Actor(this);
 	background->SetPosition(Vector2(512.f, 384.f));
