@@ -8,4 +8,7 @@ Additional libraries:
 
 * SDL [https://www.libsdl.org](https://www.libsdl.org)
 * SDL_image
+
+Useful links:
+
 * Source code from the book [https://github.com/gameprogcpp/code](https://github.com/gameprogcpp/code)
