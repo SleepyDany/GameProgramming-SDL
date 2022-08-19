@@ -16,6 +16,6 @@ private:
 	float mHSpeed;
 	float mVSpeed;
 
-	class AnimationSpriteComponent* asc;
+	class AnimationSpriteComponent* animation_component;
 };
 

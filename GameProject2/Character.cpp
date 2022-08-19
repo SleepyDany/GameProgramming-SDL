@@ -11,7 +11,7 @@ Character::Character(Game* game) :
 	mHSpeed(0.f),
 	mVSpeed(0.f)
 {
-	asc = new AnimationSpriteComponent(this);
+	animation_component = new AnimationSpriteComponent(this);
 	
 	std::regex file_regex("Character[0-1][0-9].png");
 	std::string dir = "Assets/";
@@ -26,14 +26,12 @@ Character::Character(Game* game) :
 
 		if (std::regex_match(name, file_regex))
 		{
-			std::cout << dir + name << " ";
 			animation_textures.emplace_back(game->GetTexture(dir + name));
-			//animation_textures.emplace_back(game->GetTexture(dir + name));
 		}
 	}
 	std::vector<Uint32> animation_ranges{ 0, 6, 15, 18 };
-	asc->SetAnimationTextures(animation_textures, animation_ranges);
-	asc->SetAnimation(0);
+	animation_component->SetAnimationTextures(animation_textures, animation_ranges, false);
+	animation_component->SetAnimation(0);
 }
 
 void Character::UpdateActor(float deltaTime)
@@ -51,17 +49,18 @@ void Character::ProcessKeyboard(const uint8_t* state)
 {
 	mVSpeed = 0.f;
 	mHSpeed = 0.f;
+	int id_animation = -1;
 
 	if (state[SDL_SCANCODE_A])
 	{
 		mHSpeed = -150.f;
-		asc->SetAnimation(0);
+		id_animation = 0;
 	}
 
 	if (state[SDL_SCANCODE_D])
 	{
 		mHSpeed = 150.f;
-		asc->SetAnimation(0);
+		id_animation = 0;
 	}
 
 	if (state[SDL_SCANCODE_W])
@@ -76,12 +75,15 @@ void Character::ProcessKeyboard(const uint8_t* state)
 
 	if (state[SDL_SCANCODE_SPACE])
 	{
-		asc->SetAnimation(1);
+		id_animation = 1;
 	}
 
 	Uint32 event = SDL_GetMouseState(NULL, NULL);
 	if (event == SDL_BUTTON_LEFT)
 	{
-		asc->SetAnimation(2);
+		id_animation = 2;
 	}
+
+	if (id_animation != -1)
+		animation_component->SetAnimation(id_animation);
 }
