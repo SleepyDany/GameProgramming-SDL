@@ -11,6 +11,8 @@ Actor::Actor(Game* game) :
 	mPosition.x = 0.f;
 	mPosition.y = 0.f;
 	mRotation = 0.f;
+
+	game->AddActor(this);
 }
 
 Actor::~Actor()

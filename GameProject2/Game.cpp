@@ -235,12 +235,10 @@ void Game::LoadData()
 	Ship* ship = new Ship(this);
 	ship->SetPosition(Vector2(100.f, 384.f));
 	ship->SetScale(1.5f);
-	AddActor(ship);
 
 	Character* person = new Character(this);
 	person->SetPosition(Vector2(100.f, 650.f));
 	person->SetScale(1.f);
-	AddActor(person);
 
 	Actor* background = new Actor(this);
 	background->SetPosition(Vector2(512.f, 384.f));
@@ -262,7 +260,6 @@ void Game::LoadData()
 		GetTexture("Assets/Stars.png")
 	};
 	stars_sc->SetBGTextures(stars_textures);
-	AddActor(background);
 }
 
 void Game::UnloadData()
