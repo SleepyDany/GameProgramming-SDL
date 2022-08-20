@@ -244,13 +244,13 @@ void Game::LoadData()
 	Actor* background = new Actor(this);
 	background->SetPosition(Vector2(512.f, 384.f));
 
-	TileMapComponent* tile_sc = new TileMapComponent(background, 4);
+	TileMapComponent* tile_sc = new TileMapComponent(background, 3);
 	tile_sc->Load("Assets/Tiles.tsx");
 
 	TileMapComponent* tile_sc1 = new TileMapComponent(background, 2);
 	tile_sc1->Load("Assets/Tiles1.tsx");
 
-	TileMapComponent* tile_sc2 = new TileMapComponent(background, 3);
+	TileMapComponent* tile_sc2 = new TileMapComponent(background, 1);
 	tile_sc2->Load("Assets/Tiles2.tsx");
 
 	//BGSpriteComponent* background_sc = new BGSpriteComponent(background);

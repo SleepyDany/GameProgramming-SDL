@@ -81,15 +81,19 @@ void TileMapComponent::Load(const std::string& map_file, const Vector2& size)
 			mRowCount = static_cast<Uint32>(mSize.y / mTileSet->mTileHeight);
 			std::string line;
 
-			mPositions = new Uint32* [mRowCount] {};
+			mPositions = new int* [mRowCount] {};
 			for (Uint32 i = 0; i < mRowCount; ++i)
 			{
-				mPositions[i] = new Uint32[mColumnCount]{};
+				mPositions[i] = new int[mColumnCount]{};
+
+				std::getline(file, line);
+				int end = 0, begin = 0;
 				
 				for (Uint32 j = 0; j < mColumnCount; ++j)
 				{
-					std::getline(file, line, ',');
-					mPositions[i][j] = std::stoi(line);
+					end = line.find(',', begin);
+					mPositions[i][j] = std::stoi(line.substr(begin, end - begin));
+					begin = end + 1;
 				}
 			}
 		}
@@ -109,20 +113,20 @@ void TileMapComponent::Draw(SDL_Renderer* renderer)
 	{
 		for (Uint32 j = 0; j < mColumnCount; ++j)
 		{
-			Uint32 tile_id = mPositions[i][j];
+			int tile_id = mPositions[i][j];
 
 			if (tile_id == -1)
 				continue;
 			else
 			{
-				dst_rect.x = static_cast<int>(mOwner->GetPosition().x - 512.f + i * mTileSet->mTileWidth);
-				dst_rect.y = static_cast<int>(mOwner->GetPosition().y - 384.f + j * mTileSet->mTileHeight);
+				dst_rect.x = static_cast<int>(mOwner->GetPosition().x - 512.f + j * mTileSet->mTileWidth);
+				dst_rect.y = static_cast<int>(mOwner->GetPosition().y - 384.f + i * mTileSet->mTileHeight);
 
 				src_rect.w = static_cast<int>(mTileSet->mTileWidth * mOwner->GetScale());
 				src_rect.h = static_cast<int>(mTileSet->mTileHeight * mOwner->GetScale());
 
-				src_rect.x = static_cast<int>(tile_id % mTileSet->mRowCount * mTileSet->mTileWidth);
-				src_rect.y = static_cast<int>(tile_id / mTileSet->mRowCount * mTileSet->mTileHeight);
+				src_rect.x = static_cast<int>((tile_id % mTileSet->mColumnCount) * mTileSet->mTileWidth);
+				src_rect.y = static_cast<int>((tile_id / mTileSet->mColumnCount) * mTileSet->mTileHeight);
 
 				SDL_RenderCopyEx(renderer, mTexture, &src_rect, &dst_rect, -Math::ToDegrees(mOwner->GetRotation()), nullptr, SDL_FLIP_NONE);
 			}

@@ -46,7 +46,7 @@ private:
 
 	TileSet* mTileSet;
 
-	Uint32** mPositions;
+	int** mPositions;
 
 	Uint32 mRowCount;
 	Uint32 mColumnCount;
