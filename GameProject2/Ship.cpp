@@ -1,6 +1,4 @@
 #include "Ship.h"
-#include "Game.h"
-#include "AnimationSpriteComponent.h"
 
 Ship::Ship(Game* game) : 
 	Actor(game),

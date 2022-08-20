@@ -6,7 +6,7 @@
 class BGSpriteComponent : public SpriteComponent
 {
 public:
-	BGSpriteComponent(class Actor* owner, int drawOrder = 10);
+	BGSpriteComponent(Actor* owner, int drawOrder = 10);
 
 	void Update(float deltaTime) override;
 	void Draw(SDL_Renderer* renderer) override;

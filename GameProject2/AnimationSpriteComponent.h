@@ -5,7 +5,7 @@
 class AnimationSpriteComponent : public SpriteComponent
 {
 public:
-	AnimationSpriteComponent(class Actor* owner, int drawOrder = 100);
+	AnimationSpriteComponent(Actor* owner, int drawOrder = 100);
 
 	void Update(float deltaTime) override;
 	void SetAnimationTextures(const std::vector<SDL_Texture*>& textures,
@@ -16,12 +16,12 @@ public:
 	int GetAnimationSize(Uint8 id) const;
 	int GetAnimationCount() const { return mAnimationRanges.size() - 1; }
 	bool GetLoopState() const { return mIsLooped; }
-	bool GetPlayState() const { return mIsPlaying; }
+	bool GetRunState() const { return mIsRunning; }
 
 	void SetAnimationFPS(float fps) { mAnimationFPS = fps; }
 	void SetAnimation(Uint8 id);
 	void SetLoopState(bool is_looped) { mIsLooped = is_looped; }
-	void SetPlayState(bool is_playing) { mIsPlaying = is_playing; }
+	void SetPlayState(bool is_playing) { mIsRunning = is_playing; }
 
 private:
 	std::vector<SDL_Texture*> mAnimationTextures;
@@ -32,6 +32,6 @@ private:
 	std::vector<Uint32> mAnimationRanges;
 
 	bool mIsLooped;
-	bool mIsPlaying;
+	bool mIsRunning;
 };
 

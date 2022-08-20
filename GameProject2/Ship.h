@@ -1,10 +1,12 @@
 #pragma once
 #include "Actor.h"
+#include "Game.h"
+#include "AnimationSpriteComponent.h"
 
 class Ship : public Actor
 {
 public:
-	Ship(class Game* game);
+	Ship(Game* game);
 
 	void UpdateActor(float deltaTime) override;
 	void ProcessKeyboard(const uint8_t* state);

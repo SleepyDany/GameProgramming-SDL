@@ -1,6 +1,4 @@
 #include "BGSpriteComponent.h"
-#include "Actor.h"
-#include "Math.h"
 
 BGSpriteComponent::BGSpriteComponent(Actor* owner, int drawOrder) :
 	SpriteComponent(owner, drawOrder),
