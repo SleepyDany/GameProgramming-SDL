@@ -5,6 +5,7 @@
 #include "SpriteComponent.h"
 #include "AnimationSpriteComponent.h"
 #include "BGSpriteComponent.h"
+#include "TileMapComponent.h"
 #include "Ship.h"
 #include "Character.h"
 
@@ -242,24 +243,34 @@ void Game::LoadData()
 
 	Actor* background = new Actor(this);
 	background->SetPosition(Vector2(512.f, 384.f));
-	BGSpriteComponent* background_sc = new BGSpriteComponent(background);
-	background_sc->SetScreenSize(Vector2(1024.f, 768.f));
-	std::vector<SDL_Texture*> background_textures = {
-		GetTexture("Assets/Farback01.png"),
-		GetTexture("Assets/Farback02.png")
-	};
-	background_sc->SetBGTextures(background_textures);
-	background_sc->SetScreenScrollSpeed(-10.f);
+
+	TileMapComponent* tile_sc = new TileMapComponent(background, 4);
+	tile_sc->Load("Assets/Tiles.tsx");
+
+	TileMapComponent* tile_sc1 = new TileMapComponent(background, 2);
+	tile_sc1->Load("Assets/Tiles1.tsx");
+
+	TileMapComponent* tile_sc2 = new TileMapComponent(background, 3);
+	tile_sc2->Load("Assets/Tiles2.tsx");
+
+	//BGSpriteComponent* background_sc = new BGSpriteComponent(background);
+	//background_sc->SetScreenSize(Vector2(1024.f, 768.f));
+	//std::vector<SDL_Texture*> background_textures = {
+	//	GetTexture("Assets/Farback01.png"),
+	//	GetTexture("Assets/Farback02.png")
+	//};
+	//background_sc->SetBGTextures(background_textures);
+	//background_sc->SetScreenScrollSpeed(-10.f);
 
 
-	BGSpriteComponent* stars_sc = new BGSpriteComponent(background, 50);
-	stars_sc->SetScreenScrollSpeed(-25.f);
-	stars_sc->SetScreenSize(Vector2(1024.f, 768.f));
-	std::vector<SDL_Texture*> stars_textures = { 
-		GetTexture("Assets/Stars.png"),
-		GetTexture("Assets/Stars.png")
-	};
-	stars_sc->SetBGTextures(stars_textures);
+	//BGSpriteComponent* stars_sc = new BGSpriteComponent(background, 50);
+	//stars_sc->SetScreenScrollSpeed(-25.f);
+	//stars_sc->SetScreenSize(Vector2(1024.f, 768.f));
+	//std::vector<SDL_Texture*> stars_textures = { 
+	//	GetTexture("Assets/Stars.png"),
+	//	GetTexture("Assets/Stars.png")
+	//};
+	//stars_sc->SetBGTextures(stars_textures);
 }
 
 void Game::UnloadData()
