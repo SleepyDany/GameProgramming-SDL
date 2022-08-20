@@ -8,6 +8,7 @@ Additional libraries:
 
 * SDL [https://www.libsdl.org](https://www.libsdl.org)
 * SDL_image
+* RapidXML [http://rapidxml.sourceforge.net/](http://rapidxml.sourceforge.net/)
 
 Useful links:
 
