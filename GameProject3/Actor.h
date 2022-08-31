@@ -2,6 +2,10 @@
 #include "Math.h"
 #include <vector>
 
+class Game;
+class Component;
+
+
 // Game object model - Hierarchy with components
 class Actor
 {
@@ -13,7 +17,7 @@ public:
 		EDead
 	};
 
-	Actor(class Game* game);
+	Actor(Game* game);
 	virtual ~Actor();
 
 	void Update(float deltaTime);
@@ -25,16 +29,17 @@ public:
 
 	// Getters/setters
 
-	void AddComponent(class Component* component);
-	void RemoveComponent(class Component* component);
+	void AddComponent(Component* component);
+	void RemoveComponent(Component* component);
 
-	class Game* GetGame() { return mGame; }
+	Game* GetGame() { return mGame; }
 	State GetState() const { return mState; }
 	const Vector2& GetPosition() const { return mPosition; }
 	float GetScale() const { return mScale; }
 	float GetRotation() const { return mRotation; }
 	Vector2 GetForward() const { return mForward; }
 
+	void SetState(const State& state) { mState = state; }
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	void SetScale(float scale) { mScale = scale; }
 	void SetRotation(float rotation) { mRotation = rotation; }
@@ -48,7 +53,7 @@ private:
 	float mScale;
 	float mRotation;
 
-	std::vector<class Component*> mComponents;
-	class Game* mGame; // dependency injection approach instead of singleton
+	std::vector<Component*> mComponents;
+	Game* mGame; // dependency injection approach instead of singleton
 };
 

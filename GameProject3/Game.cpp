@@ -24,7 +24,7 @@ bool Game::Initialize()
 		return false;
 	}
 
-	mWindow = SDL_CreateWindow("Game 2", 100, 100, 1024, 768, 0);
+	mWindow = SDL_CreateWindow("Game 3", 100, 100, 1024, 768, 0);
 	if (!mWindow)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
@@ -43,6 +43,12 @@ bool Game::Initialize()
 	{
 		SDL_Log("Unable to initialize image PNG format: %s", SDL_GetError());
 		return false;
+	}
+
+	const int numAsteroids = Random::GetIntRange(8, 15);
+	for (int i = 0; i < numAsteroids; ++i)
+	{
+		mAsteroids.emplace_back(new Asteroid(this));
 	}
 
 	LoadData();
@@ -98,10 +104,6 @@ void Game::ProcessInput()
 		actor->ProcessInput(kb_state);
 	}
 	mUpdatingActors = false;
-
-
-	//reinterpret_cast<Ship*>(mActors[0])->ProcessKeyboard(kb_state);
-	//reinterpret_cast<Character*>(mActors[1])->ProcessKeyboard(kb_state);
 }
 
 void Game::UpdateGame()
@@ -139,6 +141,7 @@ void Game::UpdateGame()
 
 	for (auto& actor : deadActors)
 	{
+		RemoveActor(actor);
 		delete actor;
 	}
 }
@@ -182,6 +185,13 @@ void Game::RemoveActor(Actor* actor)
 	{
 		std::iter_swap(iter, mActors.end() - 1);
 		mActors.pop_back();
+	}
+
+	auto iter2 = std::find(mAsteroids.begin(), mAsteroids.end(), actor);
+	if (iter2 != mAsteroids.end())
+	{
+		std::iter_swap(iter2, mAsteroids.end() - 1);
+		mAsteroids.pop_back();
 	}
 }
 
@@ -245,21 +255,8 @@ void Game::LoadData()
 	ship->SetPosition(Vector2(100.f, 384.f));
 	ship->SetScale(1.5f);
 
-	//Character* person = new Character(this);
-	//person->SetPosition(Vector2(100.f, 650.f));
-	//person->SetScale(1.f);
-
 	Actor* background = new Actor(this);
 	background->SetPosition(Vector2(512.f, 384.f));
-
-	//TileMapComponent* tile_sc = new TileMapComponent(background, 3);
-	//tile_sc->Load("Assets/Tiles.tsx");
-
-	//TileMapComponent* tile_sc1 = new TileMapComponent(background, 2);
-	//tile_sc1->Load("Assets/Tiles1.tsx");
-
-	//TileMapComponent* tile_sc2 = new TileMapComponent(background, 1);
-	//tile_sc2->Load("Assets/Tiles2.tsx");
 
 	BGSpriteComponent* background_sc = new BGSpriteComponent(background);
 	background_sc->SetScreenSize(Vector2(1024.f, 768.f));
@@ -270,7 +267,6 @@ void Game::LoadData()
 	background_sc->SetBGTextures(background_textures);
 	background_sc->SetScreenScrollSpeed(-10.f);
 
-
 	BGSpriteComponent* stars_sc = new BGSpriteComponent(background, 50);
 	stars_sc->SetScreenScrollSpeed(-25.f);
 	stars_sc->SetScreenSize(Vector2(1024.f, 768.f));
@@ -279,12 +275,6 @@ void Game::LoadData()
 		GetTexture("Assets/Stars.png")
 	};
 	stars_sc->SetBGTextures(stars_textures);
-
-	const int numAsteroids = Random::GetIntRange(8, 15);
-	for (int i = 0; i < numAsteroids; ++i)
-	{
-		new Asteroid(this);
-	}
 }
 
 void Game::UnloadData()

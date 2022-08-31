@@ -4,6 +4,10 @@
 #include <unordered_map>
 #include <string>
 
+class Actor;
+class SpriteComponent;
+class Asteroid;
+
 class Game
 {
 public:
@@ -11,13 +15,14 @@ public:
 	void RunLoop();
 	void Shutdown();
 
-	void AddActor(class Actor* actor);
-	void RemoveActor(class Actor* actor);
+	void AddActor(Actor* actor);
+	void RemoveActor(Actor* actor);
 
-	void AddSprite(class SpriteComponent* sprite);
-	void RemoveSprite(class SpriteComponent* sprite);
+	void AddSprite(SpriteComponent* sprite);
+	void RemoveSprite(SpriteComponent* sprite);
 
 	SDL_Texture* GetTexture(const std::string& fileName);
+	std::vector<Asteroid*> GetAsteroids() const { return mAsteroids; }
 
 private:
 	void ProcessInput();
@@ -39,9 +44,11 @@ private:
 	std::vector<Actor*> mPendingActors;
 	bool mUpdatingActors;
 
-	std::vector<class SpriteComponent*> mSprites;
+	std::vector<SpriteComponent*> mSprites;
 
 	std::unordered_map<std::string, SDL_Texture*> mTextures;
+
+	std::vector<Asteroid*> mAsteroids;
 
 	bool mIsRunning;
 };

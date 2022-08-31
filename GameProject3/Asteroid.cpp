@@ -22,15 +22,16 @@ Asteroid::Asteroid(Game* game) :
 	MoveComponent* move = new MoveComponent(this);
 	move->SetForwardSpeed(Random::GetFloatRange(100.f, 200.f));
 	move->SetAngularSpeed(Random::GetFloatRange(0.f, 10.f));
+
+	mCircle = new CircleComponent(this);
+	mCircle->SetRadius(40.0f);
 }
 
 void Asteroid::UpdateActor(float deltaTime)
 {
 	auto position = GetPosition();
 	auto size = GetSize();
-	float rotation = GetRotation();
-	//rotation += 24 * deltaTime;
-	
+	float rotation = GetRotation();	
 	
 	if (position.x - mSize.x / 2 > 1024 || position.x + mSize.x / 2 < 0 || position.y + mSize.y / 2 < 0 || position.y - mSize.y / 2 > 768)
 	{
@@ -39,8 +40,7 @@ void Asteroid::UpdateActor(float deltaTime)
 		rotation = Random::GetFloatRange(0.f, Math::TwoPi);
 
 		SetPosition(position);
+		SetRotation(rotation);
 		SetForward(Vector2(Math::Cos(rotation), -Math::Sin(rotation)));
 	}
-
-	SetRotation(rotation);
 }

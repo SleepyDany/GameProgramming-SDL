@@ -1,10 +1,12 @@
 #include "Ship.h"
+#include "Laser.h"
+#include "Game.h"
+#include "AnimationSpriteComponent.h"
 #include "InputComponent.h"
 
 Ship::Ship(Game* game) : 
 	Actor(game),
-	mHSpeed(0.f),
-	mVSpeed(0.f)
+	mLaserCountdown(0.0f)
 {
 	AnimationSpriteComponent* asc = new AnimationSpriteComponent(this);
 	std::vector<SDL_Texture*> animation_textures = {
@@ -15,54 +17,34 @@ Ship::Ship(Game* game) :
 	};
 	asc->SetAnimationTextures(animation_textures, {}, true);
 
-	InputComponent* input = new InputComponent(this);
-	input->SetForwardKey(SDL_SCANCODE_D);
-	input->SetBackKey(SDL_SCANCODE_A);
-	input->SetClockwiseKey(SDL_SCANCODE_W);
-	input->SetCounterClockwiseKey(SDL_SCANCODE_S);
-	input->SetMaxForwardSpeed(200.f);
-	input->SetMaxAngularSpeed(Math::Pi / 2);
+	mInput = new InputComponent(this);
+	mInput->SetForwardKey(SDL_SCANCODE_D);
+	mInput->SetBackKey(SDL_SCANCODE_A);
+	mInput->SetClockwiseKey(SDL_SCANCODE_W);
+	mInput->SetCounterClockwiseKey(SDL_SCANCODE_S);
+	mInput->SetMaxForwardSpeed(200.f);
+	mInput->SetMaxAngularSpeed(Math::Pi / 2);
+}
+
+void Ship::ActorInput(const uint8_t* keyState)
+{
+	if (keyState[SDL_SCANCODE_SPACE] && mLaserCountdown <= 0.0f)
+	{
+		Laser* laser = new Laser(GetGame());
+
+		laser->SetForward(GetForward());
+		laser->SetRotation(GetRotation());
+		laser->SetPosition(GetPosition() + GetForward() * 60.f);
+
+		mLaserCountdown = 0.5f;
+	}
 }
 
 void Ship::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
 
-	Vector2 pos = GetPosition();
-	pos.x += mHSpeed * deltaTime;
-	pos.y += mVSpeed * deltaTime;
+	mLaserCountdown -= deltaTime;
 
-	SetPosition(pos);
+	// Реализовать интуитивное управление при повороте корабля
 }
-
-//void Ship::ProcessKeyboard(const uint8_t* state)
-//{
-//	mVSpeed = 0.f;
-//	mHSpeed = 0.f;
-//	float rotation = 0.f;
-//
-//	if (state[SDL_SCANCODE_A])
-//	{
-//		mHSpeed = -150.f;
-//		rotation += M_PI;
-//	}
-//
-//	if (state[SDL_SCANCODE_D])
-//	{
-//		mHSpeed = 150.f;
-//	}
-//
-//	if (state[SDL_SCANCODE_W])
-//	{
-//		mVSpeed = -150.f;
-//		rotation += M_PI / 6 * (mHSpeed >= 0.f ? 1.f : -1.f);
-//	}
-//
-//	if (state[SDL_SCANCODE_S])
-//	{
-//		mVSpeed = 150.f;
-//		rotation -= M_PI / 6 * (mHSpeed >= 0.f ? 1.f : -1.f);
-//	}
-//
-//	SetRotation(rotation);
-//}
